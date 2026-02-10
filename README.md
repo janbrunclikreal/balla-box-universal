@@ -1,37 +1,17 @@
-# BALLA BOX UNIVERSAL v1.0.0
-Autor: Jan Brunclík (janbrunclik)  
-Platforma/testováno: Orange Pi 5 Ultra (RK3588), kernel 6.1.43-rockchip-rk3588  
-Kontakt: ulaskyeu@gmail.com
+# BALLA BOX UNIVERSAL – streaming service for Orange Pi (RK3588)
 
-## Co to dělá
-BALLA BOX UNIVERSAL je uživatelská (systemd --user) služba pro:
-- capture obrazovky + kamera (v4l2)
-- mix mikrofonu + desktop audia (PipeWire/PulseAudio)
-- stream přes RTMP (GStreamer)
-- současně ukládá lokální záznam do MKV (Matroska)
+Univerzální nástroje a konfigurace pro stabilní streamování na **Orange Pi 5 Ultra (RK3588)**. Tento repozitář slouží jako otevřený deník mého projektu a zároveň jako instalační sada pro komunitu.
 
-Součástí je watchdog, který umí restartovat službu při opakovaných audio drop chybách.
+## Klíčové vlastnosti
+- **Capture**: Snímání obrazovky, kamery a mix audia přes PipeWire/GStreamer.
+- **Automatizace**: Systemd služby pro automatický start a watchdog.
+- **Optimalizace**: Fixace frekvencí RK3588 pro stabilní výkon bez dropů.
+- **Distribuce**: Možnost snadného sestavení vlastního `.deb` balíčku pro čistou a bezpečnou instalaci.
 
-## Obsah repozitáře
-- `.local/bin/balla_box_stable.sh` – hlavní GStreamer pipeline (stream + záznam)
-- `.local/bin/ballabox_watchdog.sh` – watchdog nad journalctl a systemctl --user
-- `.local/bin/fix_freq_rk3588.sh` – fix frekvencí CPU/GPU/NPU/DDR (vyžaduje root)
-- `.config/systemd/user/ballabox.service` – user systemd unit
+## Instalace a sestavení balíčku
+Pro maximální bezpečnost a čistotu systému doporučuji sestavit si balíček lokálně přímo na vašem zařízení. Tím máte plnou kontrolu nad tím, co se do vašeho systému instaluje.
 
-## Požadavky (runtime)
-- systemd (user units)
-- GStreamer 1.0 (`gst-launch-1.0`) a pluginy pro video/audio (včetně encoderu pro RK3588 dle distribuce)
-- PipeWire/PulseAudio kompatibilní vrstva (používá `pulsesrc`)
-- `ffmpeg` (pro opravu MKV po nekorektním ukončení)
-- `nc` (netcat) pro test dostupnosti RTMP portu
-- v4l2 kamera zařízení (`/dev/video1`)
-- X11 (používá `ximagesrc` + DISPLAY)
-
-Pozn.: audio device stringy jsou přímo konkrétní (PipeWire/PulseAudio názvy zařízení).
-
-## Instalace (manuální, user-local)
-1) Zkopíruj skripty:
+### 1. Klonování repozitáře
 ```bash
-install -Dm755 .local/bin/balla_box_stable.sh ~/.local/bin/balla_box_stable.sh
-install -Dm755 .local/bin/ballabox_watchdog.sh ~/.local/bin/ballabox_watchdog.sh
-install -Dm755 .local/bin/fix_freq_rk3588.sh ~/.local/bin/fix_freq_rk3588.sh
+git clone https://github.com/janbrunclikreal/balla-box-universal.git
+cd balla-box-universal

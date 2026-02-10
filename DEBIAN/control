@@ -1,0 +1,8 @@
+Package: balla-box-universal
+Version: 1.0.0
+Section: utils
+Priority: optional
+Architecture: arm64
+Maintainer: Jan Brunclik <janbrunclikreal>
+Description: Univerzální streamovací nástroje pro Orange Pi 5 (RK3588).
+ Obsahuje systemd služby a pomocné skripty pro automatizaci vysílání.

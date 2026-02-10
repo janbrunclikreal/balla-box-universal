@@ -1,0 +1,23 @@
+#!/bin/bash
+set -e
+
+# Dynamické zjištění hlavního uživatele (zůstává pro logy)
+TARGET_USER=$(id -nu 1000 2>/dev/null || echo $USER)
+
+echo "[balla_box_1.0.0] Aktualizuji systémové služby pro uživatele: $TARGET_USER"
+
+# 1. Logovací složka (stále dává smysl mít ji v home)
+LOG_DIR="/home/$TARGET_USER/.local/share/balla-box"
+if [ ! -d "$LOG_DIR" ]; then
+    mkdir -p "$LOG_DIR"
+    chown $TARGET_USER:$TARGET_USER "$LOG_DIR"
+fi
+
+# 2. Informování systemd (User instance)
+# Protože jsou soubory v /usr/lib/systemd/user, stačí jen reloadnout instanci daného uživatele
+if id 1000 >/dev/null 2>&1; then
+    # Spustíme reload pro uživatele 1000, aby hned viděl novou službu
+    su - $TARGET_USER -c "systemctl --user daemon-reload"
+fi
+
+exit 0
