@@ -1,0 +1,29 @@
+# =====================================================================
+# BALLA BOX UNIVERSAL v1.0.0 – Autor: Jan Brunclík (janbrunclik)  
+# Platforma: Orange Pi 5 Ultra (6.1.43-rockchip-rk3588)
+# email : ulaskyeu@gmail.com 
+# =====================================================================
+
+[Unit]
+Description=Balla Box Universal
+After=graphical-session.target pipewire.service pipewire-pulse.service
+Wants=pipewire-pulse.service
+
+[Service]
+Type=simple
+ExecStart=%h/.local/bin/balla_box_stable.sh
+Restart=on-failure
+# Základní čas mezi restarty
+RestartSec=5s
+# Postupně prodlužuj interval mezi pokusy (např. až na 1 minutu)
+# Toto zabrání zahlcení logů, pokud je server dlouho offline
+StartLimitIntervalSec=0
+# Pokud chceš přesto limit (např. po 100 pokusech už fakt dost), 
+# odkomentuj řádek níže, ale pro "Balla Box" doporučuji nechat 0 (nekonečno).
+StartLimitBurst=100
+
+# Když chceš mít jasno, můžeš nechat jen DISPLAY:
+Environment=DISPLAY=:0
+
+[Install]
+WantedBy=default.target
