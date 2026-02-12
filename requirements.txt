@@ -1,0 +1,5 @@
+# Systémové závislosti (instalovat přes apt):
+# python3-gi, gir1.2-gst-plugins-base-1.0, gstreamer1.0-plugins-bad
+#
+# Python metadata (pro informaci):
+PyGObject
