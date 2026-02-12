@@ -6,3 +6,7 @@
 .DS_Store
 Thumbs.db
 build_tmp
+gst-rockchip
+mpp
+git-commit.bash
+COMMIT.txt

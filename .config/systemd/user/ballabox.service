@@ -1,7 +1,7 @@
 [Unit]
 Description=Balla Box Universal (Python Version)
-After=graphical-session.target pipewire.service pipewire-pulse.service
-Wants=pipewire-pulse.service
+After=graphical-session.target pulseaudio.service
+Wants=pulseaudio.service
 # Tady mají být tyto limity:
 StartLimitIntervalSec=0
 StartLimitBurst=100
@@ -14,7 +14,7 @@ Restart=on-failure
 RestartSec=5s
 
 Environment=DISPLAY=:0
-Environment=XDG_RUNTIME_DIR=/run/user/1000
+Environment=XDG_RUNTIME_DIR=/run/user/%U
 
 [Install]
 WantedBy=default.target
