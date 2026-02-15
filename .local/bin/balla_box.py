@@ -61,19 +61,19 @@ class BallaBox:
 
             # --- AUDIO CORE ---
             f"audiomixer name=amix latency=200000000 alignment-threshold=40000000 ! "
-            f"audio/x-raw,rate=44100,channels=2 ! audioconvert ! voaacenc bitrate=128000 ! tee name=atee",
+            f"audio/x-raw,rate=48000,channels=2 ! audioconvert ! voaacenc bitrate=128000 ! tee name=atee",
 
             # Mikrofon (oprava synchronizace a resample)
-            f"pulsesrc device={self.mic_src} do-timestamp=true provide-clock=false slave-method=resample ! "
+            f"pulsesrc device={self.mic_src} do-timestamp=true provide-clock=true slave-method=resample ! "
             f"queue max-size-buffers=100 max-size-time=2000000000 ! "
             f"audioconvert ! audioresample ! "
-            f"volume volume=1.5 ! audio/x-raw,rate=44100 ! amix.",
+            f"volume volume=1.5 ! audio/x-raw,rate=48000 ! amix.",
 
             # Zvuk plochy
             f"pulsesrc device={self.desktop_src} do-timestamp=true provide-clock=false slave-method=resample ! "
             f"queue max-size-buffers=100 max-size-time=2000000000 ! "
             f"audioconvert ! audioresample ! "
-            f"volume volume=0.4 ! audio/x-raw,rate=44100 ! amix.",
+            f"volume volume=0.4 ! audio/x-raw,rate=48000 ! amix.",
 
             # --- VÝSTUPY ---
             # Lokální záznam
@@ -84,7 +84,7 @@ class BallaBox:
             f"vtee. ! queue leaky=downstream max-size-buffers=30 ! "
             f"clocksync ! video/x-h264,stream-format=avc,alignment=au ! "
             f"flvmux name=fmux streamable=true ! "
-            f"rtmpsink location={self.rtmp_url} async=true sync=false",
+            f"rtmpsink location={self.rtmp_url} async=false sync=false",
             f"atee. ! queue leaky=downstream max-size-buffers=100 ! fmux."
         ]
 
