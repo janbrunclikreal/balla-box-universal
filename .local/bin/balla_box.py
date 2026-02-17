@@ -77,15 +77,15 @@ class BallaBox:
 
             # --- VÝSTUPY ---
             # Lokální záznam
-            f"vtee. ! queue leaky=1 ! matroskamux name=mux ! filesink location={self.file_path} async=false",
-            f"atee. ! queue leaky=1 ! mux.",
+            f"vtee. ! queue leaky=downstream max-size-time=2000000000 max-size-buffers=0 max-size-bytes=0 ! matroskamux name=mux ! filesink location={self.file_path} async=false",
+            f"atee. ! queue leaky=downstream max-size-time=2000000000 max-size-buffers=0 max-size-bytes=0 ! mux.",
             
             # RTMP Stream (přidán clocksync a avc format pro fixaci DTS)
-            f"vtee. ! queue leaky=downstream max-size-buffers=30 ! "
+            f"vtee. ! queue leaky=downstream max-size-time=1000000000 max-size-buffers=0 max-size-bytes=0 ! "
             f"clocksync ! video/x-h264,stream-format=avc,alignment=au ! "
             f"flvmux name=fmux streamable=true ! "
             f"rtmpsink location={self.rtmp_url} async=false sync=false",
-            f"atee. ! queue leaky=downstream max-size-buffers=100 ! fmux."
+            f"atee. ! queue leaky=downstream max-size-time=1000000000 max-size-buffers=0 max-size-bytes=0 ! fmux."
         ]
 
         pipeline_str = " ".join(parts)
